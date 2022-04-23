@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>Get Current Temperature of a City</title>
+</head>
+<body>
+
+<br>
+<p style="font-size:1.1em;font-weight:bold;"> This is powered by openweathermap.org's <a href="https://openweathermap.org/api" target="_blank">Weather API</a></p>
+<p style="font-size:1.1em;font-weight:bold;"> Enter any city name and click on the "Get Temperature" button to get the current temperature of the entered city.</p>
+<p style="font-size:1.1em;font-weight:bold;"> If the output is "Code: 404, Message: city not found" then the entered city is not present in the openweather.org's predefined list of more than 200,000 locations.</p>
+<br>
+<input type="text" style="text-align:center;" id="city" placeholder="Enter city name"/>
+<input type="submit" value="Get Temperature" onclick="temp();" />
+<br><br>
+<p id="print" style="font-size:1.1em;font-weight:bold;"></p>
+
+<script>
+
+function temp(){
+	var city = document.getElementById("city").value;
+	const xmlhttp = new XMLHttpRequest();
+	xmlhttp.onload = function() {
+		const weatherdata = JSON.parse(this.responseText);
+		if(weatherdata.cod==404){
+			document.getElementById("print").innerHTML = "Code: "+weatherdata.cod+"<br>Message: "+weatherdata.message;
+		}
+		else if(weatherdata.cod==200){
+			document.getElementById("print").innerHTML = "Current Temperature in "+ city +": "+weatherdata.main.temp+" K";
+		}
+	}
+	xmlhttp.open("GET", "https://api.openweathermap.org/data/2.5/weather?q="+ city +"&appid=58b2601d680226bb66ea12b94d456fbf");
+	xmlhttp.send();
+}
+
+</script>
+
+</body>
+</html>
